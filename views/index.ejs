@@ -10,17 +10,34 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://npmcdn.com/moralis@0.0.6/dist/moralis.js"></script>
+
+    <script src="/index.js" defer></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style.css">
 
     <title>Crypto Chat</title>
 </head>
 <body>
-    <p>HELLO</p>
-    <p>Here we'll have the list of chat rooms and call room links:</p>
-    <ul>
-        <li>
-            <a href="http://localhost:3000/room" target="_blank" rel="noopener noreferrer">Join Room</a>
-            <!-- <a href="https://crypto-chat-app.herokuapp.com/chat/room/1">Room 1</a> -->
-        </li>
-    </ul>
+
+    <div class="buttons">
+        <h1 class="greeting">Welcome To Crypto Chat App</h1>
+        <button class="btn btn-primary" id="btn-login">Login</button>
+        <button class="btn btn-primary" id="btn-logout">Logout</button>
+    </div>
+
+    <div class="content">
+        <p>Here we'll have the list of chat rooms and call room links:</p>
+        <ul>
+            <li>
+                <a href="http://localhost:3000/room" target="_blank" rel="noopener noreferrer">Join Room</a>
+                <!-- <a href="https://crypto-chat-app.herokuapp.com/chat/room/1">Room 1</a> -->
+            </li>
+        </ul>
+
+    </div>
+   
 </body>
 </html>

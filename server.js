@@ -8,7 +8,7 @@ const { ExpressPeerServer } = require('peer')
 const peerServer = ExpressPeerServer(server, {
   debug: true,
 })
-const port = process.env.PORT || 3000
+const port = 
 
 // to generate random roomId, using uuid
 // this may need to live on the client side so that it can generate a link to then join the room
@@ -19,10 +19,10 @@ const chatRoomId = uuidV4()
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-app.use('/peerjs', peerServer)
+app.use("/peerjs", peerServer)
 
 // on connection we go to the home page
-app.get('/', (req, res) => {
+app.get('/home', (req, res) => {
   // if you have a homepage for the application, you can use this:
   res.render('index')
   // to create a brand new room and redirect user there, we do this:
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 })
 
 // time to take roomID link from index.ejs and redirect to room.ejs when user clicks on room
-app.get('/room/:room', (req, res) => {
+app.get('/:room', (req, res) => {
   // you get room from :room (which comes from link)
   res.render('room', { roomId: req.params.room })
 })
@@ -68,5 +68,4 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(port)
-console.log(`listening on port ${port}`)
+server.listen(process.env.PORT || 3000)

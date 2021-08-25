@@ -1,17 +1,17 @@
 const socket = io('/')
+
 const videoGrid = document.getElementById('video-grid')
+const myVideo = document.createElement('video')
+myVideo.muted = true
+
 const myPeer = new Peer(undefined, {
-  host: '/peerjs',
+  path: '/peerjs',
+  host: '/',
   secure: true,
   port: '443',
 })
 
-// to run peer: peerjs --port 443
-
 let myVideoStream
-
-const myVideo = document.createElement('video')
-myVideo.muted = true
 
 const peers = {}
 
@@ -33,8 +33,9 @@ navigator.mediaDevices
     })
     // when user connects, listen that user has connected, get the ID and then connect to that user
     socket.on('user-connected', (userId) => {
-      console.log('user connected', userId)
-      connectToNewUser(userId, stream)
+      setTimeout(function () {
+        connectToNewUser(userId, stream)
+      }, 1000)
     })
     // input value
     let text = $('input')
@@ -63,6 +64,7 @@ myPeer.on('open', (id) => {
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
+
   const video = document.createElement('video')
   call.on('stream', (userVideoStream) => {
     addVideoStream(video, userVideoStream)
@@ -83,8 +85,8 @@ function addVideoStream(video, stream) {
 }
 
 const scrollToBottom = () => {
-  var d = $('.main__chat_window')
-  d.scrollTop(d.prop('scrollHeight'))
+  var bottom = $('.main__chat_window')
+  bottom.scrollTop(bottom.prop('scrollHeight'))
 }
 
 const muteUnmute = () => {
@@ -174,9 +176,27 @@ const setPlayVideo = () => {
   document.querySelector('.main__video_button').innerHTML = html
 }
 
-// when URL changes to specific chatRoom id, run this code
-const roomId = window.location.href.split('/')[3]
-console.log(roomId)
-if (roomId) {
-  socket.emit('join-room', ROOM_ID)
+//display room url
+var roomUrl = window.location.href
+const html = `<h6>Room id: <span>${roomUrl}</span></h6>`
+document.querySelector('.room_url').innerHTML = html
+
+const copyText = document.querySelector('.room_url span')
+copyText.onclick = function () {
+  document.execCommand('copy')
+}
+copyText.addEventListener('copy', function (event) {
+  event.preventDefault()
+  if (event.clipboardData) {
+    event.clipboardData.setData('text/plain', copyText.textContent)
+    alert('Room id copied!!!')
+  }
+})
+
+//chat window toggle hide/unhide
+function openNav() {
+  document.getElementById('mySidenav').style.width = '320px'
+}
+function closeNav() {
+  document.getElementById('mySidenav').style.width = '0'
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- chat room -->
+    <div class="container fixed-container-height">
+        <div class="header-area">
+        <h1 class="text-center">
+            <i class="fas fa-comments"></i>
+            &nbsp; &nbsp; Tsaishen Crypto Chat &nbsp; &nbsp;
+            <i class="fas fa-comments"></i>
+        </h1>
+        <h3 class="text-center" id="groupNameDisplay"></h3>
+        </div>
+
+        <div class="message-area" id="chatHistory">
+        <ul id="historyList"></ul>
+        </div>
+
+        <div class="typing-area">
+        <textarea
+            class="typing-box"
+            type="text"
+            id="chatMessageInput"
+        ></textarea>
+        <button
+            class="btn btn-dark btn-sm"
+            id="sendMessageChatBtn"
+            onclick="sendMessage()"
+        >
+            Send
+            <i class="far fa-paper-plane"></i>
+        </button>
+        </div>
+    </div>
+</body>
+</html>

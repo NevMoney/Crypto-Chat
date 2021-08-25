@@ -2,6 +2,10 @@ const express = require('express')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+const { ExpressPeerServer } = require('peer')
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+})
 const port = process.env.PORT || 3000
 
 // to generate random roomId, using uuid

@@ -41,6 +41,7 @@ function loggedIn() {
   $('#btn-logout').show()
   $('.content').show()
   $('#btn-userInfo').show()
+  $('#userInfo').hide()
   $('#welcome_text').append(`
         <p class="lead text-center text-md-left text-muted mb-6 mb-lg-8">
             As a token holder you can create chat rooms where other crypto enthusiasts can join. 
@@ -247,7 +248,10 @@ async function getGroupChats() {
   for (let object of results) {
     let groupName = object.get('groupName')
     let listItem = document.createElement('li')
-    listItem.innerHTML = `<a href="chat.html?id=${object.id}" id="${object.get(
+    // listItem.innerHTML = `<a href="/chatRoom.ejs?id=${
+    //   object.id
+    // }" id="${object.get('groupChatId')}">${groupName}</a>`
+    listItem.innerHTML = `<a href="http://localhost:3000/chatRoom" id="${object.get(
       'groupChatId',
     )}">${groupName}</a>`
     $('#chatRoomsList').append(listItem)

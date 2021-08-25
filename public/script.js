@@ -5,7 +5,7 @@ const myPeer = new Peer(undefined, {
   port: '443',
 })
 
-// to run peers: peerjs --port 443
+// to run peer: peerjs --port 443
 
 let myVideoStream
 
@@ -171,4 +171,11 @@ const setPlayVideo = () => {
     <span>Play Video</span>
   `
   document.querySelector('.main__video_button').innerHTML = html
+}
+
+// when URL changes to specific chatRoom id, run this code
+const roomId = window.location.href.split('/')[3]
+console.log(roomId)
+if (roomId) {
+  socket.emit('join-room', ROOM_ID)
 }

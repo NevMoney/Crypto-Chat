@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000
 // this may need to live on the client side so that it can generate a link to then join the room
 const { v4: uuidV4 } = require('uuid')
 const roomId = uuidV4()
+const chatRoomId = uuidV4()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -30,6 +31,17 @@ app.get('/room/:room', (req, res) => {
 // then add the roomId to the roomId variable in the room.ejs file
 app.get('/room', (req, res) => {
   res.redirect(`/room/${roomId}`)
+})
+
+// for the group chat, we already have id and name from Moralis DB
+// i want to push the chatRoomId from front end/DB and render chatRoom.ejs
+app.get('/chatRoom/:chatRoomId', (req, res) => {
+  res.render('chatRoom.ejs', { chatRoomId: req.params.chatRoomId })
+})
+
+// now we need to redirect to the chatRoom.ejs file
+app.get('/chatRoom', (req, res) => {
+  res.redirect(`/chatRoom/${chatRoomId}`)
 })
 
 io.on('connection', (socket) => {

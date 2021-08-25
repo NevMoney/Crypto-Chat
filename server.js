@@ -1,17 +1,25 @@
+const { response } = require('express')
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+const { v4: uuidV4 } = require('uuid')
+const { ExpressPeerServer } = require('peer')
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+})
 const port = process.env.PORT || 3000
 
 // to generate random roomId, using uuid
 // this may need to live on the client side so that it can generate a link to then join the room
-const { v4: uuidV4 } = require('uuid')
+
 const roomId = uuidV4()
 const chatRoomId = uuidV4()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
+
+app.use('/peerjs', peerServer)
 
 // on connection we go to the home page
 app.get('/', (req, res) => {
@@ -46,7 +54,6 @@ app.get('/chatRoom', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('join-room', (roomId, userId) => {
-    console.log(roomId, userId)
     socket.join(roomId)
     socket.broadcast.to(roomId).emit('user-connected', userId)
 

@@ -179,3 +179,35 @@ ul {
   font-size: 1.25rem;
   padding: auto;
 }
+
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  font-size: 1.25rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.message-area {
+  justify-content: left;
+  align-items: left;
+  font-size: 1.25rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  float: inline-start;
+  height: 70vh;
+}
+
+.typing-area {
+  padding: 22px 12px;
+  display: flex;
+}
+
+.typing-area input {
+  flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  color: #f5f5f5;
+}

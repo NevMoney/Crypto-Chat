@@ -207,55 +207,6 @@ function getBottom() {
   return chatHistory.scrollHeight - chatHistory.scrollTop
 }
 
-function goDark() {
-  document.body.classList.toggle('dark-mode')
-  $('#dark-light-toggle').html('<i class="fas fa-moon"></i>')
-  $('.bg-white').addClass('bg-white')
-  $('.bg-white').removeClass('bg-black')
-  $('#chatMessageInput').removeClass('dark-mode')
-
-  // check to see if in dark mode and if so, switch button to sun icon
-  if (document.body.classList.contains('dark-mode')) {
-    $('#dark-light-toggle').html('<i class="fas fa-lightbulb"></i>')
-    $('.bg-white').removeClass('bg-white')
-    $('.bg-white').addClass('bg-black')
-    $('#chatMessageInput').addClass('dark-mode')
-  }
-}
-
-async function verifyUserHoldsToken() {
-  // get user tokens:
-  const ercBalance = await Moralis.Web3.getAllERC20()
-  const nftBalance = await Moralis.Web3.getNFTs()
-  const testnetNFTs = await Moralis.Web3.getNFTs({ chain: 'rinkeby' })
-
-  // create a loop to get all symbols form all balance objects
-  let symbols = []
-  for (let i = 0; i < ercBalance.length; i++) {
-    symbols.push(ercBalance[i].symbol)
-  }
-  for (let i = 0; i < nftBalance.length; i++) {
-    symbols.push(nftBalance[i].symbol)
-  }
-  for (let i = 0; i < testnetNFTs.length; i++) {
-    symbols.push(testnetNFTs[i].symbol)
-  }
-  // many symbols are coming as null, so I want to remove them
-  symbols = symbols.filter((x) => x !== null)
-  console.log('symbols', symbols)
-
-  let chatToken = await getRequiredChatToken()
-
-  // check if chat token is in the list of symbols
-  if (symbols.indexOf(chatToken) > -1) {
-    console.log('token found')
-    return true
-  } else {
-    console.log('token not found')
-    return false
-  }
-}
-
 async function allowToChat() {
   var userHasToken = await verifyUserHoldsToken()
   if (!userHasToken) {
@@ -265,6 +216,7 @@ async function allowToChat() {
 }
 
 appendGroupName()
-allowToChat()
+// allowToChat()
 getHistoryMessages()
 listenForMessages()
+scrollToBottom()

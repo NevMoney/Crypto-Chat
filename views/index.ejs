@@ -58,7 +58,7 @@
         <div id="login_out_buttons">
             <button type="button" class="btn btn-primary btn-lg" id="btn-login" onclick="login()">Login</button>
             <button type="button" class="btn btn-primary btn-lg" id="btn-logout" onclick="logOut()">Logout</button>
-            <button type="button" class="btn btn-primary btn-lg" id="btn-userInfo" onclick="showUserInfo()">Username</button>
+            <!-- <button type="button" class="btn btn-primary btn-lg" id="btn-userInfo" onclick="showUserInfo()">Username</button> -->
         </div>
         <div id="userInfo" class="row">
             <input type="text" class="form-control" id="userName">
@@ -72,45 +72,45 @@
             
             <!-- Chat CREATION Page -->
             <div id="chatRoom" class="hidden">
-                <h3 class="display-4 text-left text-md-left">Create A New Chat Group: </h3>
-                <p class="text-muted text-left text-md-left">You must hold a token to create a chat group for that specific token. </p>
+                <!-- <h3 class="display-4 text-left text-md-left">Create A New Chat Group: </h3>
+                <p class="text-muted text-left text-md-left">You must hold a token to create a chat group for that specific token. </p> -->
                 <div class="row">
         
-                <div class="col-3">
-                    <input type="text" class="form-control" placeholder="Group name" id="groupNameInput">
-                </div>
-        
-                <div class="col-3">
-                    <input type="text" class="form-control" placeholder="Group token symbol*" id="tokenInput">
-                    <label for="tokenInput"><small class="text-muted">*To restrict users to a specific token, enter token symbol</small></label>
-                </div>
-        
-                <div class="col-3">
-                    <button class="btn btn-primary" onclick="createGroup()">New <i class="fas fa-comments"></i> Group</button>
-                    <button class="btn btn-primary" onclick="window.location.href = 'http://localhost:3000/room';">New <i class="fas fa-video"></i> Group</button>
-                </div>
+                    <!-- <div class="col-3">
+                        <input type="text" class="form-control" placeholder="Group name" id="groupNameInput">
+                    </div>
+            
+                    <div class="col-3">
+                        <input type="text" class="form-control" placeholder="Group token symbol*" id="tokenInput">
+                        <label for="tokenInput"><small class="text-muted">*To restrict users to a specific token, enter token symbol</small></label>
+                    </div> -->
+            
+                    <div class="col-3">
+                        <!-- <button class="btn btn-primary" onclick="createGroup()">New <i class="fas fa-comments"></i> Group</button> -->
+                        <button class="btn btn-primary" onclick="window.location.href = 'http://localhost:3000/room';">New <i class="fas fa-video"></i> Group</button>
+                    </div>
                 
                 </div> <!-- / .row -->
         
-                <div class="py-6  py-md-4">
+                <!-- <div class="py-6  py-md-4"> -->
         
                     <!-- Chat Room List -->
-                    <div class="card group-list-card">
-                        <h3 class="display-4 text-left text-md-left" id="chatRoomListHeading">Join A Group Chat: </h3>
+                    <!-- <div class="card group-list-card">
+                        <h3 class="display-4 text-left text-md-left" id="chatRoomListHeading">Join A Group Chat: </h3> -->
             
                         <!-- Spinner -->
-                        <div class="d-flex justify-content-center">
+                        <!-- <div class="d-flex justify-content-center">
                             <div id="chatListSpinner" class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
                             </div>
-                        </div>
+                        </div> -->
             
-                        <div class="py-3 py-md-6" id="chatRooms">
+                        <!-- <div class="py-3 py-md-6" id="chatRooms">
                             <ul id="chatRoomsList" class="text-lg-left"></ul>
-                        </div>
-                    </div> <!-- / .card -->
-                </div> 
+                        </div> -->
+                  <!--  </div>  / .card -->
+                <!-- </div>  -->
 
-            </div> <!-- / .content -->
+            </div> <!--   / .content -->
         </div>
    
 </body>

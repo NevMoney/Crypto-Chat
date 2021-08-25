@@ -14,6 +14,8 @@ const { v4: uuidV4 } = require('uuid')
 const roomId = uuidV4()
 const chatRoomId = uuidV4()
 
+app.use('/peerjs', peerServer)
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 

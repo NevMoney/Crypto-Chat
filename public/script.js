@@ -6,7 +6,7 @@ myVideo.muted = true
 
 const myPeer = new Peer(undefined, {
   path: '/peerjs',
-  host: '/',
+  host: 'https://crypto-calls.herokuapp.com/',
   port: '443',
 })
 

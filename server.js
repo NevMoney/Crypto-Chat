@@ -22,7 +22,7 @@ app.use(express.static('public'))
 app.use('/peerjs', peerServer)
 
 // on connection we go to the home page
-app.get('/', (req, res) => {
+app.get('https://crypto-calls.herokuapp.com/', (req, res) => {
   // if you have a homepage for the application, you can use this:
   res.render('index')
   // to create a brand new room and redirect user there, we do this:

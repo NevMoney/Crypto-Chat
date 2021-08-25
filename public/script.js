@@ -23,6 +23,7 @@ navigator.mediaDevices
     myVideoStream = stream
     addVideoStream(myVideo, stream)
     $('#pageTitle').append(`${ROOM_ID}`)
+    console.log('roomId', ROOM_ID)
     myPeer.on('call', (call) => {
       call.answer(stream)
       const video = document.createElement('video')
@@ -32,6 +33,7 @@ navigator.mediaDevices
     })
     // when user connects, listen that user has connected, get the ID and then connect to that user
     socket.on('user-connected', (userId) => {
+      console.log('user connected', userId)
       setTimeout(function () {
         connectToNewUser(userId, stream)
       }, 1000)

@@ -8,18 +8,16 @@ const { ExpressPeerServer } = require('peer')
 const peerServer = ExpressPeerServer(server, {
   debug: true,
 })
-const port = 
 
 // to generate random roomId, using uuid
 // this may need to live on the client side so that it can generate a link to then join the room
 
-const roomId = uuidV4()
-const chatRoomId = uuidV4()
+// const chatRoomId = uuidV4()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-app.use("/peerjs", peerServer)
+app.use('/peerjs', peerServer)
 
 // on connection we go to the home page
 app.get('/home', (req, res) => {
@@ -38,7 +36,7 @@ app.get('/:room', (req, res) => {
 // need to open the room.ejs file and add the roomId to the roomId variable
 // then add the roomId to the roomId variable in the room.ejs file
 app.get('/room', (req, res) => {
-  res.redirect(`/room/${roomId}`)
+  res.redirect(`/room/${uuidV4()}`)
 })
 
 // for the group chat, we already have id and name from Moralis DB
@@ -68,4 +66,4 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(process.env.PORT || 3000)
+server.listen(process.env.PORT || 3030)

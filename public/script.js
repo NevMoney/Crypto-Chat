@@ -47,20 +47,25 @@ navigator.mediaDevices
         text.val('')
       }
     })
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, userId) => {
       $('ul').append(`<li class="message"><b>${userId}</b><br/>${message}</li>`)
       scrollToBottom()
     })
   })
 
 socket.on('user-disconnected', (userId) => {
-  if (peers[userId]) peers[userId].close()
+  console.log('peers', peers)
+  if (peers[userId]) {
+    peers[userId].close()
+  }
+  console.log('user left', userId)
 })
 
 // as soon as we connect using myPeer server and get id, run this code:
 myPeer.on('open', (id) => {
   // this sends an event to the server and we pass the userId
   socket.emit('join-room', ROOM_ID, id)
+  console.log('joined room', ROOM_ID, id)
 })
 
 function connectToNewUser(userId, stream) {

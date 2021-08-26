@@ -99,6 +99,11 @@ $('#closeProfileInfoBtn').on('click', function () {
   $('#userInfo').hide()
 })
 
+async function getUsername() {
+  let moralisUser = await Moralis.User.current()
+  return moralisUser.get('username')
+}
+
 async function getUserHoldings() {
   const queryEth = new Moralis.Query('EthBalance')
   const results = await queryEth.find()

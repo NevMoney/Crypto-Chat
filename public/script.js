@@ -51,9 +51,11 @@ navigator.mediaDevices
     socket.on('createMessage', (message) => {
       console.log('message', message)
       console.log('userId', myPeer._id)
-      let userId = myPeer._id.slice(0 - 5)
+      // this is great as it gives last 5 of the user id
+      // let userId = myPeer._id.slice(0 - 5)
+      // but it only uses the local userId and as such every message emits the same userId on client side
       $('ul').append(
-        `<li class="message"><b>User${userId}</b> says:<br/>${message}</li>`,
+        `<li class="message"><b>User</b> says:<br/>${message}</li>`,
       )
       scrollToBottom()
     })

@@ -35,7 +35,6 @@ navigator.mediaDevices
     // when user connects, listen that user has connected, get the ID and then connect to that user
     socket.on('user-connected', (userId) => {
       console.log('user connected', userId)
-      user = userId
       setTimeout(function () {
         connectToNewUser(userId, stream)
       }, 1000)
@@ -49,10 +48,12 @@ navigator.mediaDevices
         text.val('')
       }
     })
-    socket.on('createMessage', (message, user) => {
+    socket.on('createMessage', (message, userId) => {
       console.log('message', message)
-      console.log('userId', user)
-      $('ul').append(`<li class="message"><b>${user}</b><br/>${message}</li>`)
+      console.log('userId', peers[userId])
+      $('ul').append(
+        `<li class="message"><b>${peers[userId]}</b><br/>${message}</li>`,
+      )
       scrollToBottom()
     })
   })
@@ -67,7 +68,6 @@ socket.on('user-disconnected', (userId) => {
 
 // as soon as we connect using myPeer server and get id, run this code:
 myPeer.on('open', (id) => {
-  user = id
   console.log('user @open', user)
   socket.emit('join-room', ROOM_ID, id)
 })

@@ -51,9 +51,6 @@ navigator.mediaDevices
     socket.on('createMessage', (message, user) => {
       console.log('message', message)
       console.log('userId', user)
-      if (userId === user) {
-        console.log('user is userId')
-      }
       $('ul').append(`<li class="message"><b>${user}</b><br/>${message}</li>`)
       scrollToBottom()
     })

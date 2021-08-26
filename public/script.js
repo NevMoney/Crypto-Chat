@@ -51,8 +51,9 @@ navigator.mediaDevices
     socket.on('createMessage', (message) => {
       console.log('message', message)
       console.log('userId', myPeer._id)
+      let userId = myPeer._id.slice(0 - 5)
       $('ul').append(
-        `<li class="message"><b>${myPeer._id}</b><br/>${message}</li>`,
+        `<li class="message"><b>User${userId}</b> says:<br/>${message}</li>`,
       )
       scrollToBottom()
     })

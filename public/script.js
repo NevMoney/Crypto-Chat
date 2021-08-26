@@ -48,11 +48,11 @@ navigator.mediaDevices
         text.val('')
       }
     })
-    socket.on('createMessage', (message, userId) => {
+    socket.on('createMessage', (message) => {
       console.log('message', message)
-      console.log('userId', peers[userId])
+      console.log('userId', myPeer._id)
       $('ul').append(
-        `<li class="message"><b>${peers[userId]}</b><br/>${message}</li>`,
+        `<li class="message"><b>${myPeer._id}</b><br/>${message}</li>`,
       )
       scrollToBottom()
     })
@@ -68,7 +68,7 @@ socket.on('user-disconnected', (userId) => {
 
 // as soon as we connect using myPeer server and get id, run this code:
 myPeer.on('open', (id) => {
-  console.log('user @open', user)
+  console.log('user @open', id)
   socket.emit('join-room', ROOM_ID, id)
 })
 

@@ -35,6 +35,7 @@ navigator.mediaDevices
     // when user connects, listen that user has connected, get the ID and then connect to that user
     socket.on('user-connected', (userId) => {
       console.log('user connected', userId)
+      user = userId
       setTimeout(function () {
         connectToNewUser(userId, stream)
       }, 1000)

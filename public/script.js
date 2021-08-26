@@ -50,9 +50,7 @@ navigator.mediaDevices
     })
     socket.on('createMessage', (message, userId) => {
       console.log('message', message)
-        console.log('userId', userId)
-        let messenger = await getUsername()
-        console.log('messenger', messenger)
+      console.log('userId', userId)
       if (userId === user) {
         console.log('user is userId')
       }
@@ -71,8 +69,8 @@ socket.on('user-disconnected', (userId) => {
 
 // as soon as we connect using myPeer server and get id, run this code:
 myPeer.on('open', (id) => {
-    user = id
-    console.log("user", id)
+  user = id
+  console.log('user', id)
   socket.emit('join-room', ROOM_ID, id)
   console.log('joined room', ROOM_ID, id)
 })

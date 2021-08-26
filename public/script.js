@@ -24,7 +24,7 @@ navigator.mediaDevices
     myVideoStream = stream
     addVideoStream(myVideo, stream)
     $('#pageTitle').append(`${ROOM_ID}`)
-    console.log('roomId', ROOM_ID)
+
     myPeer.on('call', (call) => {
       call.answer(stream)
       const video = document.createElement('video')
@@ -70,14 +70,12 @@ socket.on('user-disconnected', (userId) => {
 // as soon as we connect using myPeer server and get id, run this code:
 myPeer.on('open', (id) => {
   user = id
-  console.log('user', id)
+  console.log('user @open', user)
   socket.emit('join-room', ROOM_ID, id)
-  console.log('joined room', ROOM_ID, id)
 })
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
-  user = userId
 
   const video = document.createElement('video')
   call.on('stream', (userVideoStream) => {

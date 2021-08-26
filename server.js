@@ -57,9 +57,9 @@ io.on('connection', (socket) => {
     socket.join(roomId)
     socket.broadcast.to(roomId).emit('user-connected', userId)
 
-    socket.on('message', (message) => {
+    socket.on('message', (message, userId) => {
       //send message to the same room
-      io.to(roomId).emit('createMessage', message)
+      io.to(roomId).emit('createMessage', message, userId)
     })
 
     socket.on('disconnect', () => {

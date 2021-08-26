@@ -48,8 +48,13 @@ navigator.mediaDevices
         text.val('')
       }
     })
-    socket.on('createMessage', (message, user) => {
-      $('ul').append(`<li class="message"><b>${user}</b><br/>${message}</li>`)
+    socket.on('createMessage', (message, userId) => {
+      console.log('message', message)
+      console.log('userId', userId)
+      if (userId === user) {
+        console.log('user is userId')
+      }
+      $('ul').append(`<li class="message"><b>${userId}</b><br/>${message}</li>`)
       scrollToBottom()
     })
   })

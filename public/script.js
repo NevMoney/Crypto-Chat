@@ -11,6 +11,7 @@ const myPeer = new Peer(undefined, {
 })
 
 let myVideoStream
+let user
 
 const peers = {}
 
@@ -47,8 +48,8 @@ navigator.mediaDevices
         text.val('')
       }
     })
-    socket.on('createMessage', (message, userId) => {
-      $('ul').append(`<li class="message"><b>${userId}</b><br/>${message}</li>`)
+    socket.on('createMessage', (message, user) => {
+      $('ul').append(`<li class="message"><b>${user}</b><br/>${message}</li>`)
       scrollToBottom()
     })
   })
@@ -70,6 +71,7 @@ myPeer.on('open', (id) => {
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
+  user = userId
 
   const video = document.createElement('video')
   call.on('stream', (userVideoStream) => {

@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid')
@@ -44,6 +45,7 @@ const chatRoomId = uuidV4()
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.json())
+app.use(cors())
 
 app.post('/create-checkout-session', async (req, res) => {
   try {
@@ -63,8 +65,8 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: item.quantity,
         }
       }),
-      success_url: `${process.env.SERVER_URL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.SERVER_URL}/`,
+      success_url: `${process.env.CLIENT_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLIENT_URL}/index.html`,
     })
     res.json({ url: session.url })
     console.log('stripe session', session)

@@ -269,7 +269,7 @@ getGroupChats()
 function stripeCheckout() {
   console.log('stripe checkout')
   // we will use server.js app.post('/create-checkout-session', async (req, res) function to create a checkout session
-  fetch('/create-checkout-session', {
+  fetch(`http://localhost:3000/create-checkout-session`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

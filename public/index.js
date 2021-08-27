@@ -264,3 +264,33 @@ async function getGroupChats() {
 }
 
 getGroupChats()
+
+// creationg stript checkout
+function stripeCheckout() {
+  console.log('stripe checkout')
+  // we will use server.js app.post('/create-checkout-session', async (req, res) function to create a checkout session
+  fetch('/create-checkout-session', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      items: [
+        { id: 1, quantity: 2 },
+        { id: 2, quantity: 1 },
+        { id: 3, quantity: 1 },
+      ],
+    }),
+  })
+    .then((res) => {
+      if (res.ok) return res.json()
+      return res.json().then((json) => Promise.reject(json))
+    })
+    .then(({ url }) => {
+      console.log('url', url)
+      window.location = url
+    })
+    .catch((err) => {
+      console.log(err.error)
+    })
+}

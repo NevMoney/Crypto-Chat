@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
@@ -7,31 +9,82 @@ const { ExpressPeerServer } = require('peer')
 const peerServer = ExpressPeerServer(server, {
   debug: true,
 })
-
 const port = process.env.PORT || 3000
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+
+const storeItems = new Map([
+  [
+    1,
+    {
+      priceInCents: 1000,
+      name: '1 Time Usage',
+    },
+  ],
+  [
+    2,
+    {
+      priceInCents: 5000,
+      name: 'Monthly Plan',
+    },
+  ],
+  [
+    3,
+    {
+      priceInCents: 30000,
+      name: 'Annual Plan',
+    },
+  ],
+])
 
 // to generate random roomId, using uuid
-// this may need to live on the client side so that it can generate a link to then join the room
-
+// chatRoomId may need to consider using Moralis DB fetching instead of uuid
 const roomId = uuidV4()
 const chatRoomId = uuidV4()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
+app.use(express.json())
+
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: req.body.items.map((item) => {
+        const storeItem = storeItems.get(item.id)
+        return {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: storeItem.name,
+            },
+            unit_amount: storeItem.priceInCents,
+          },
+          quantity: item.quantity,
+        }
+      }),
+      success_url: `${process.env.SERVER_URL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.SERVER_URL}/`,
+    })
+    res.json({ url: session.url })
+    console.log('stripe session', session)
+    $('#purchasedItems').append(
+      `<li>Item: ${session.name}, Quantity: ${session.quantity}, Price per unit: ${session.unit_amount}</li>`,
+    )
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
 
 app.use('/peerjs', peerServer)
 
 // on connection we go to the home page
 app.get('/', (req, res) => {
-  // if you have a homepage for the application, you can use this:
   res.render('index')
-  // to create a brand new room and redirect user there, we do this:
-  //   res.redirect(`/room/${roomId}`)
 })
 
 // time to take roomID link from index.ejs and redirect to room.ejs when user clicks on room
 app.get('/room/:room', (req, res) => {
-  // you get room from :room (which comes from link)
   res.render('room', { roomId: req.params.room })
 })
 
@@ -52,6 +105,7 @@ app.get('/chatRoom', (req, res) => {
   res.redirect(`/chatRoom/${chatRoomId}`)
 })
 
+// socket.io communication for video calls and messages
 io.on('connection', (socket) => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)

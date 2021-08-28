@@ -30,8 +30,6 @@
     <script src="/client/index.js" defer></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/style.css" />
-    <!-- because stylesheet is in public folder and html is in client we need to relink -->
     <link rel="stylesheet" href="/public/style.css" />
 
     <!-- fontAwesome-->
@@ -61,9 +59,9 @@
             data-bs-aos="fade-up"
           >
             <!-- Heading -->
-            <h1 class="display-3 text-center text-md-left">
+            <h1 class="display-2 text-center text-md-left">
               Crypto
-              <span class="display-4 text-primary">Chat</span>
+              <span class="display-3 text-primary">Chat</span>
               .
             </h1>
 
@@ -93,7 +91,14 @@
         >
           Logout
         </button>
-        <!-- <button type="button" class="btn btn-primary btn-lg" id="btn-userInfo" onclick="showUserInfo()">Username</button> -->
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          id="btn-userInfo"
+          onclick="showUserInfo()"
+        >
+          Username
+        </button>
       </div>
       <div id="userInfo" class="row">
         <input type="text" class="form-control" id="userName" />
@@ -117,58 +122,170 @@
     <div class="content">
       <!-- Chat CREATION Page -->
       <div id="chatRoom" class="hidden">
-        <!-- <h3 class="display-4 text-left text-md-left">Create A New Chat Group: </h3>
-                <p class="text-muted text-left text-md-left">You must hold a token to create a chat group for that specific token. </p> -->
+        <h3 class="display-4 text-left text-md-left">
+          Create A New Chat Group:
+        </h3>
+        <p class="lead text-muted text-left text-md-left">
+          You must hold a token to create a chat group for that specific token.
+        </p>
         <div class="row">
-          <!-- <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Group name" id="groupNameInput">
-                    </div>
-            
-                    <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Group token symbol*" id="tokenInput">
-                        <label for="tokenInput"><small class="text-muted">*To restrict users to a specific token, enter token symbol</small></label>
-                    </div> -->
+          <div class="col-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Group name"
+              id="groupNameInput"
+            />
+          </div>
 
           <div class="col-3">
-            <!-- <button class="btn btn-primary" onclick="createGroup()">New <i class="fas fa-comments"></i> Group</button> -->
-            <button
-              class="btn btn-primary"
-              id="stripeCheckoutBtn"
-              onclick="stripeCheckout()"
-            >
-              Checkout
-            </button>
-            <button
-              class="btn btn-primary"
-              onclick="window.location.href = 'https://crypto-calls.herokuapp.com/room/';"
-            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Group token symbol*"
+              id="tokenInput"
+            />
+            <label for="tokenInput">
+              <small class="text-muted">
+                *To restrict users to a specific token, enter token symbol
+              </small>
+            </label>
+          </div>
+
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg" onclick="createGroup()">
               New
-              <i class="fas fa-video"></i>
+              <i class="fas fa-comments"></i>
               Group
             </button>
           </div>
         </div>
         <!-- / .row -->
 
-        <!-- <div class="py-6  py-md-4"> -->
+        <div class="py-6 py-md-4">
+          <!-- Chat Room List -->
+          <div class="card group-list-card">
+            <h3
+              class="display-4 text-left text-md-left"
+              id="chatRoomListHeading"
+            >
+              Join A Group Chat:
+            </h3>
 
-        <!-- Chat Room List -->
-        <!-- <div class="card group-list-card">
-                        <h3 class="display-4 text-left text-md-left" id="chatRoomListHeading">Join A Group Chat: </h3> -->
+            <!-- Spinner -->
+            <div class="d-flex justify-content-center">
+              <div
+                id="chatListSpinner"
+                class="spinner-grow text-primary"
+                style="width: 3rem; height: 3rem;"
+                role="status"
+              ></div>
+            </div>
 
-        <!-- Spinner -->
-        <!-- <div class="d-flex justify-content-center">
-                            <div id="chatListSpinner" class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                            </div>
-                        </div> -->
+            <div class="py-3 py-md-6" id="chatRooms">
+              <ul id="chatRoomsList" class="text-lg-left"></ul>
+            </div>
+          </div>
+          <!-- / .card -->
+        </div>
 
-        <!-- <div class="py-3 py-md-6" id="chatRooms">
-                            <ul id="chatRoomsList" class="text-lg-left"></ul>
-                        </div> -->
-        <!--  </div>  / .card -->
-        <!-- </div>  -->
+        <div class="py-6 py-md-4">
+          <!-- Video Calls Card -->
+          <div class="card group-list-card">
+            <h3
+              class="display-4 text-left text-md-left"
+              id="chatRoomListHeading"
+            >
+              Create Video Calls:
+            </h3>
+
+            <!-- Spinner -->
+            <div class="d-flex justify-content-center">
+              <div
+                id="videoCallSpinner"
+                class="spinner-grow text-primary"
+                style="width: 3rem; height: 3rem; display: none;"
+                role="status"
+              ></div>
+            </div>
+
+            <div class="py-3 py-md-6" id="videoRooms">
+              <!-- have a video call button, when clicked new div opens up asking them if they want to make it publicly visible, if yes, checkout button shows up, if no, go to room -->
+              <button
+                class="btn btn-primary btn-lg"
+                id="createVideoCallButton"
+                onclick="displayCallOptionsDiv()"
+              >
+                Create
+                <i class="fas fa-video"></i>
+                Call
+              </button>
+
+              <div id="callOptionsDiv">
+                <p
+                  class="lead text-center text-md-left text-muted mb-6 mb-lg-8"
+                >
+                  Would you like to display your video chat room link for others
+                  to join?
+                </p>
+
+                <button
+                  class="btn btn-primary btn-lg"
+                  onclick="createVideoCall()"
+                >
+                  Yes
+                </button>
+
+                <button
+                  class="btn btn-primary btn-lg"
+                  onclick="window.location.href = 'https://crypto-calls.herokuapp.com/room/';"
+                >
+                  No
+                </button>
+              </div>
+
+              <div id="videoCallDiv">
+                <p
+                  class="lead text-center text-md-left text-muted mb-6 mb-lg-8"
+                >
+                  Have an important video that you'd like to share with others
+                  live? Ensure that the link to your video displays for all to
+                  see and join easily.
+                </p>
+
+                <p
+                  class="lead text-center text-md-left text-muted mb-6 mb-lg-8"
+                >
+                  This feature costs only $4.99.
+                </p>
+
+                <button
+                  class="btn btn-primary btn-lg"
+                  id="stripeCheckoutBtn"
+                  onclick="stripeCheckout()"
+                >
+                  Checkout
+                </button>
+                &nbsp; &nbsp; &nbsp;
+
+                <!-- FOR USE IN PRODUCTION: -->
+                <!-- <a href="https://crypto-calls.herokuapp.com/">
+                  <small>nevermind</small>
+                </a> -->
+
+                <!-- FOR USE LOCALLY: -->
+                <a href="http://127.0.0.1:5500/client/">
+                  <small>nevermind</small>
+                </a>
+              </div>
+
+              <ul id="videoRoomsList" class="text-lg-left"></ul>
+            </div>
+            <!-- /.card-->
+          </div>
+        </div>
       </div>
-      <!--   / .content -->
+      <!-- /.content -->
     </div>
   </body>
 </html>

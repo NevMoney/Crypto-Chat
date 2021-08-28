@@ -267,3 +267,75 @@ ul {
     width: 160px;
   }
 }
+
+#callOptionsDiv,
+#videoCallDiv {
+  display: none;
+}
+
+/* for success.html we will add background video to the container */
+.background-image-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.background-image-section h1 {
+  text-align: center;
+  font-weight: 500;
+  padding: 10px;
+  margin: 15px;
+  opacity: 0.75;
+  z-index: 1;
+  display: block;
+  position: absolute;
+  top: 5%;
+}
+
+.background-image-section h1:hover {
+  opacity: 1;
+}
+
+.background-image-section p {
+  text-align: center;
+  color: white;
+  font-weight: 500;
+  font-size: 1.5rem;
+  padding: 10px;
+  margin: 15px;
+  z-index: 1;
+  display: block;
+  position: absolute;
+  top: 20%;
+}
+
+.background-image-section button {
+  z-index: 1;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 40%;
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.color-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #1c1e20;
+  opacity: 0.7;
+}

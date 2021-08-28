@@ -265,7 +265,7 @@ async function getGroupChats() {
 
 getGroupChats()
 
-// creationg stript checkout
+// creationg stripe checkout
 function stripeCheckout() {
   console.log('stripe checkout')
   // we will use server.js app.post('/create-checkout-session', async (req, res) function to create a checkout session
@@ -276,9 +276,9 @@ function stripeCheckout() {
     },
     body: JSON.stringify({
       items: [
-        { id: 1, quantity: 2 },
-        { id: 2, quantity: 1 },
-        { id: 3, quantity: 1 },
+        { id: 1, quantity: 1 },
+        // { id: 2, quantity: 1 },
+        // { id: 3, quantity: 1 },
       ],
     }),
   })
@@ -293,4 +293,70 @@ function stripeCheckout() {
     .catch((err) => {
       console.log(err.error)
     })
+}
+
+function displayCallOptionsDiv() {
+  console.log('displayOptions clicked')
+  $('#callOptionsDiv').show()
+  $('#createVideoCallButton').hide()
+}
+
+function createVideoCall() {
+  console.log('createVideoCall clicked')
+  $('#callOptionsDiv').hide()
+  $('#videoCallDiv').show()
+}
+
+// need a sleep function to wait for videoRoom to save
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function generateNewVideoRoom() {
+  console.log('generateNewVideoRoom clicked')
+
+  const videoRoom = await getVideoRoomId()
+  console.log('videoRoomId', videoRoom)
+
+  // /room/44e2d77b-9d7e-46f6-b28f-d7b496a884e8 is the response, but I only need what comes after the last /
+  const videoRoomString = videoRoom.split('/')
+  console.log('videoRoomString', videoRoomString)
+  const videoRoomId = videoRoomString[videoRoomString.length - 1]
+  console.log('videoRoomIdStringLast', videoRoomId)
+
+  // grab moralis DB user info
+  const user = Moralis.User.current()
+  const userAddress = user.get('accounts')
+  const userName = user.get('username')
+
+  // then we need to create a new video room
+  const videoRooms = new Moralis.Object('VideoRooms')
+  videoRooms.set('creatorAddress', userAddress[0])
+  videoRooms.set('creatorUsername', userName)
+  videoRooms.set('videoRoomId', videoRoomId)
+  videoRooms.save()
+  console.log('videoRoom', videoRooms)
+
+  // then display the video room link at index.html ul#videoRoomsList
+  const listItem = document.createElement('li')
+  listItem.innerHTML = `<a href="http://localhost:3000/room/${videoRoomId}">${videoRoomId}</a>`
+  $('#videoRoomsList').append(listItem)
+
+  console.log(`http://localhost:3000/room/${videoRoomId}`)
+
+  sleep(2000).then(() => {
+    // open in new tab
+    window.open(`http://localhost:3000/room/${videoRoomId}`)
+
+    // instead of window.location.href = 'https://crypto-calls.herokuapp.com/room/';
+  })
+}
+
+// a function to get videoRoomId from Moralis DB 'VideoRooms' table
+async function getVideoRoomIds() {
+  const VideoRooms = await Moralis.Object.extend('VideoRooms')
+  const query = new Moralis.Query(VideoRooms)
+  const results = await query.find()
+  console.log('getVideoRoomId results', results)
+  return results
 }

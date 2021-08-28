@@ -4,19 +4,69 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- BOOTSTRAP -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <!-- JQUERY -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://npmcdn.com/moralis@0.0.6/dist/moralis.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/style.css" />
+
+    <!-- fontAwesome-->
+    <script
+      src="https://kit.fontawesome.com/4da3f1c584.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="/public/script.js" defer></script>
     <script src="/client/index.js"></script>
     <title>Crypto Call Success</title>
   </head>
   <body>
-    <h1>Crypto Call Success</h1>
-    <p>Thank you for your purchase. Now let's make that call and have fun!</p>
-    <button
-      class="btn btn-primary"
-      onclick="window.location.href = 'https://crypto-calls.herokuapp.com/room/';"
-    >
-      Money
-      <i class="fas fa-video"></i>
-      Call
-    </button>
+    <div class="background-image-section">
+      <h1 class="display-2 text-center text-white text-md-center py-3 py-md-6">
+        Success:
+        <span class="display-3 text-primary font-weight-bold">
+          Make Money Call
+        </span>
+        .
+      </h1>
+
+      <p class="text-left text-md-center py-3 py-md-6">
+        Thank you for your purchase. Make that call and have fun!
+      </p>
+      <br />
+
+      <button class="btn btn-primary btn-lg" onclick="generateNewVideoRoom()">
+        Create
+        <i class="fas fa-video"></i>
+        Call
+      </button>
+
+      <div class="video-container">
+        <div class="color-overlay"></div>
+        <video autoplay loop muted>
+          <source src="/public/video/backgroundVideo.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
   </body>
 </html>

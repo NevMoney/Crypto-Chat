@@ -17,30 +17,28 @@ const storeItems = new Map([
   [
     1,
     {
-      priceInCents: 1000,
-      name: '1 Time Usage',
+      priceInCents: 499,
+      name: 'Marketable Video Link',
     },
   ],
-  [
-    2,
-    {
-      priceInCents: 5000,
-      name: 'Monthly Plan',
-    },
-  ],
-  [
-    3,
-    {
-      priceInCents: 30000,
-      name: 'Annual Plan',
-    },
-  ],
+  // [
+  //   2,
+  //   {
+  //     priceInCents: 5000,
+  //     name: 'Monthly Plan',
+  //   },
+  // ],
+  // [
+  //   3,
+  //   {
+  //     priceInCents: 30000,
+  //     name: 'Annual Plan',
+  //   },
+  // ],
 ])
 
-// to generate random roomId, using uuid
-// chatRoomId may need to consider using Moralis DB fetching instead of uuid
+// first generate roomId
 const roomId = uuidV4()
-const chatRoomId = uuidV4()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -93,18 +91,8 @@ app.get('/room/:room', (req, res) => {
 // need to open the room.ejs file and add the roomId to the roomId variable
 // then add the roomId to the roomId variable in the room.ejs file
 app.get('/room', (req, res) => {
-  res.redirect(`/room/${roomId}`)
-})
-
-// for the group chat, we already have id and name from Moralis DB
-// i want to push the chatRoomId from front end/DB and render chatRoom.ejs
-app.get('/chatRoom/:chatRoomId', (req, res) => {
-  res.render('chatRoom.ejs', { chatRoomId: req.params.chatRoomId })
-})
-
-// now we need to redirect to the chatRoom.ejs file
-app.get('/chatRoom', (req, res) => {
-  res.redirect(`/chatRoom/${chatRoomId}`)
+  res.send(`/room/${roomId}`)
+  console.log('roomId sent', roomId)
 })
 
 // socket.io communication for video calls and messages

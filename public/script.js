@@ -154,7 +154,7 @@ const exitMeeting = () => {
   myVideoStream.getTracks().forEach((track) => {
     track.stop()
   })
-  window.location.href = '/'
+  window.location.href = 'http://localhost:5500/client/'
 }
 
 const setMuteButton = () => {
@@ -202,14 +202,21 @@ copyText.addEventListener('copy', function (event) {
   event.preventDefault()
   if (event.clipboardData) {
     event.clipboardData.setData('text/plain', copyText.textContent)
-    alert('Room id copied!!!')
+    console.log('Room id copied!')
   }
 })
 
-//chat window toggle hide/unhide
-function openNav() {
-  document.getElementById('mySidenav').style.width = '320px'
+// function to get video room id from the server.js app.get('/room', (req, res) => {...}
+async function getVideoRoomId() {
+  const response = await fetch(`http://localhost:3000/room`)
+    .then((res) => res.text())
+    .then((text) => {
+      console.log('text at getVideoRoomId', text)
+      return text
+    })
+    .catch((err) => console.log(err))
+  return response
 }
-function closeNav() {
-  document.getElementById('mySidenav').style.width = '0'
-}
+
+const roomId = req.query.roomId
+console.log(roomId)

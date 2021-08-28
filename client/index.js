@@ -360,3 +360,15 @@ async function getVideoRoomIds() {
   console.log('getVideoRoomId results', results)
   return results
 }
+
+async function displayPaidVideoRooms() {
+  let paidVideos = await getVideoRoomIds()
+  for (let i = 0; i < paidVideos.length; i++) {
+    let videoRoomId = paidVideos[i].get('videoRoomId')
+    let listItem = document.createElement('li')
+    listItem.innerHTML = `<a href="http://localhost:3000/room/${videoRoomId}">${videoRoomId}</a>`
+    $('#videoRoomsList').append(listItem)
+  }
+}
+
+displayPaidVideoRooms()

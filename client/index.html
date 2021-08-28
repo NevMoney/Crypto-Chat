@@ -188,103 +188,94 @@
           </div>
           <!-- / .card -->
         </div>
+      </div>
 
-        <div class="py-6 py-md-4">
-          <!-- Video Calls Card -->
-          <div class="card group-list-card">
-            <h3
-              class="display-4 text-left text-md-left"
-              id="chatRoomListHeading"
+      <div class="py-6 py-md-4">
+        <!-- Video Calls Card -->
+        <div class="card group-list-card">
+          <h3 class="display-4 text-left text-md-left" id="chatRoomListHeading">
+            Create Video Calls:
+          </h3>
+
+          <!-- Spinner -->
+          <div class="d-flex justify-content-center">
+            <div
+              id="videoCallSpinner"
+              class="spinner-grow text-primary"
+              style="width: 3rem; height: 3rem; display: none;"
+              role="status"
+            ></div>
+          </div>
+
+          <div class="py-3 py-md-6" id="videoRooms">
+            <button
+              class="btn btn-primary btn-lg"
+              id="createVideoCallButton"
+              onclick="displayCallOptionsDiv()"
             >
-              Create Video Calls:
-            </h3>
+              Create
+              <i class="fas fa-video"></i>
+              Call
+            </button>
 
-            <!-- Spinner -->
-            <div class="d-flex justify-content-center">
-              <div
-                id="videoCallSpinner"
-                class="spinner-grow text-primary"
-                style="width: 3rem; height: 3rem; display: none;"
-                role="status"
-              ></div>
-            </div>
+            <div id="callOptionsDiv">
+              <p class="lead text-center text-md-left text-muted mb-6 mb-lg-8">
+                Would you like to display your video chat room link for others
+                to join?
+              </p>
 
-            <div class="py-3 py-md-6" id="videoRooms">
-              <!-- have a video call button, when clicked new div opens up asking them if they want to make it publicly visible, if yes, checkout button shows up, if no, go to room -->
               <button
                 class="btn btn-primary btn-lg"
-                id="createVideoCallButton"
-                onclick="displayCallOptionsDiv()"
+                onclick="createVideoCall()"
               >
-                Create
-                <i class="fas fa-video"></i>
-                Call
+                Yes
               </button>
 
-              <div id="callOptionsDiv">
-                <p
-                  class="lead text-center text-md-left text-muted mb-6 mb-lg-8"
-                >
-                  Would you like to display your video chat room link for others
-                  to join?
-                </p>
+              <button
+                class="btn btn-primary btn-lg"
+                onclick="window.location.href = 'https://crypto-calls.herokuapp.com/room/';"
+              >
+                No
+              </button>
+            </div>
 
-                <button
-                  class="btn btn-primary btn-lg"
-                  onclick="createVideoCall()"
-                >
-                  Yes
-                </button>
+            <div id="videoCallDiv">
+              <p class="lead text-center text-md-left text-muted mb-6 mb-lg-8">
+                Have an important video that you'd like to share with others
+                live? Ensure that the link to your video displays for all to see
+                and join easily.
+              </p>
 
-                <button
-                  class="btn btn-primary btn-lg"
-                  onclick="window.location.href = 'https://crypto-calls.herokuapp.com/room/';"
-                >
-                  No
-                </button>
-              </div>
+              <p class="lead text-center text-md-left text-muted mb-6 mb-lg-8">
+                This feature costs only $4.99.
+              </p>
 
-              <div id="videoCallDiv">
-                <p
-                  class="lead text-center text-md-left text-muted mb-6 mb-lg-8"
-                >
-                  Have an important video that you'd like to share with others
-                  live? Ensure that the link to your video displays for all to
-                  see and join easily.
-                </p>
+              <button
+                class="btn btn-primary btn-lg"
+                id="stripeCheckoutBtn"
+                onclick="stripeCheckout()"
+              >
+                Checkout
+              </button>
+              &nbsp; &nbsp; &nbsp;
 
-                <p
-                  class="lead text-center text-md-left text-muted mb-6 mb-lg-8"
-                >
-                  This feature costs only $4.99.
-                </p>
-
-                <button
-                  class="btn btn-primary btn-lg"
-                  id="stripeCheckoutBtn"
-                  onclick="stripeCheckout()"
-                >
-                  Checkout
-                </button>
-                &nbsp; &nbsp; &nbsp;
-
-                <!-- FOR USE IN PRODUCTION: -->
-                <!-- <a href="https://crypto-calls.herokuapp.com/">
+              <!-- FOR USE IN PRODUCTION: -->
+              <!-- <a href="https://crypto-calls.herokuapp.com/">
                   <small>nevermind</small>
                 </a> -->
 
-                <!-- FOR USE LOCALLY: -->
-                <a href="http://127.0.0.1:5500/client/">
-                  <small>nevermind</small>
-                </a>
-              </div>
-
-              <ul id="videoRoomsList" class="text-lg-left"></ul>
+              <!-- FOR USE LOCALLY: -->
+              <a href="http://127.0.0.1:5500/client/">
+                <small>nevermind</small>
+              </a>
             </div>
-            <!-- /.card-->
+
+            <ul id="videoRoomsList" class="text-lg-left"></ul>
           </div>
+          <!-- /.card-->
         </div>
       </div>
+
       <!-- /.content -->
     </div>
   </body>

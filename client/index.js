@@ -375,13 +375,16 @@ async function displayPaidVideoRooms() {
   for (let i = 0; i < paidVideos.length; i++) {
     let callTitle = paidVideos[i].get('callGroupTitle')
     let videoRoomId = paidVideos[i].get('videoRoomId')
+    let nextCallDate = paidVideos[i].get('nextCallDate')
     let listItem = document.createElement('li')
 
     let button = `<button class="btn btn-primary btn-lg" id="joinVideoRmBtn${videoRoomId}" onclick="checkPassword('${videoRoomId}')">Join The Call</button>`
 
-    let ownerSetNameButton = `<button class="btn btn-primary btn-lg" id="setNameBtn${videoRoomId}" onclick="setName('${videoRoomId}')">Set Call Name</button>`
+    let ownerSetNameButton = `<button class="btn btn-success btn-lg" id="setNameBtn${videoRoomId}" onclick="setName('${videoRoomId}')">Set Call Name</button>`
 
-    let ownerSetPasswordButton = `<button class="btn btn-primary btn-lg" id="setPasswordBtn${videoRoomId}" onclick="setPassword('${videoRoomId}')">Set Call Password</button>`
+    let ownerSetPasswordButton = `<button class="btn btn-success btn-lg" id="setPasswordBtn${videoRoomId}" onclick="setPassword('${videoRoomId}')">Set Call Password</button>`
+
+    let ownerSetCallDateButton = `<button class="btn btn-success btn-lg" id="setCallDateBtn${videoRoomId}" onclick="setNextCallDate('${videoRoomId}')">Set Call Date</button>`
 
     if (callTitle) {
       videoRoomId = callTitle
@@ -389,10 +392,14 @@ async function displayPaidVideoRooms() {
       videoRoomId = paidVideos[i].get('videoRoomId')
     }
 
+    if (!nextCallDate) {
+      nextCallDate = ''
+    }
+
     if (videoCreator == userAddress) {
-      listItem.innerHTML = `<div id='videoCallListItem${videoRoomId}' class='container'>${videoRoomId} ${button} ${ownerSetNameButton} ${ownerSetPasswordButton}</div>`
+      listItem.innerHTML = `<div id='videoCallListItem${videoRoomId}' class='container'><b>${videoRoomId}</b> Next Call Date: ${nextCallDate}<br> ${button} <br> ${ownerSetNameButton} ${ownerSetPasswordButton} ${ownerSetCallDateButton}</div>`
     } else {
-      listItem.innerHTML = `<div id='videoCallListItem${videoRoomId}' class='container'>${videoRoomId} ${button}</div>`
+      listItem.innerHTML = listItem.innerHTML = `<div id='videoCallListItem${videoRoomId}' class='container'><b>${videoRoomId}</b> Next Call Date: ${nextCallDate}<br>${button}</div>`
     }
 
     $('#videoRoomsList').append(listItem)
@@ -470,6 +477,33 @@ async function checkPassword(videoRoomId) {
     // if there is no password, open video room
   } else {
     window.open(`http://localhost:3000/room/${videoRoomId}`)
+  }
+}
+
+// function to set date of the next call and save in Moralis DB
+async function setNextCallDate(videoRoomId) {
+  const query = new Moralis.Query('VideoRooms')
+  query.equalTo('videoRoomId', videoRoomId)
+  const results = await query.find()
+
+  const videoRoom = results[0]
+
+  // for the prompt, ensure that the user enters a date in the format YYYY-MM-DD
+  const nextCallDate = prompt(
+    'Enter the date of the next call in the format YYYY-MM-DD',
+  )
+
+  // create date object
+  const date = new Date(nextCallDate)
+  // convert date object to ISO string
+  const dateISO = date.toISOString()
+  console.log(dateISO)
+
+  if (nextCallDate === null) {
+    return
+  } else {
+    videoRoom.set('nextCallDate', nextCallDate)
+    videoRoom.save()
   }
 }
 

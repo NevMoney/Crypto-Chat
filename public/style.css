@@ -351,6 +351,7 @@ ul {
 }
 
 #callOptionsDiv {
+  margin-top: 10px;
   margin-bottom: 20px;
   padding: 10px;
   margin-left: 30px;
@@ -370,4 +371,8 @@ ul {
 
 #videoCallListItem {
   margin-bottom: 50px;
+}
+
+.btn {
+  box-shadow: #3d3d42 2px 2px 1px 1px;
 }

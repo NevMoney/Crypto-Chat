@@ -6,7 +6,7 @@ Moralis.Web3.getSigningData = () => 'Welcome to Crypto Chat'
 
 let user
 
-//   once page loads, check if user is logged in and display appropriate button
+// once page loads, check if user is logged in and display appropriate button
 $(document).ready(async function () {
   // is user logged in
   let moralisUser = Moralis.User.current()
@@ -17,6 +17,7 @@ $(document).ready(async function () {
   }
 })
 
+// GENERAL MORALIS FUNCTIONS
 function notLoggedIn() {
   $('#welcome_text').empty()
   $('#btn-login').show()
@@ -60,7 +61,6 @@ async function loggedIn() {
       `)
 }
 
-// add from here down
 async function login() {
   let mUser = Moralis.User.current()
   if (!mUser) {
@@ -76,7 +76,6 @@ async function logOut() {
   notLoggedIn()
 }
 
-// in MyProfile page this information is populated
 const showUserInfo = async () => {
   $('#userInfo').show()
   let moralisUser = await Moralis.User.current()
@@ -87,7 +86,6 @@ const showUserInfo = async () => {
   }
 }
 
-// in MyProfile user can update information including add avatar.
 const saveUserInfo = async () => {
   let moralisUser = await Moralis.User.current()
   moralisUser.set('username', $('#userName').val())
@@ -109,6 +107,7 @@ async function getUsername() {
   return moralisUser.get('username')
 }
 
+// USER CRYPTO HOLDING
 async function getUserHoldings() {
   const queryEth = new Moralis.Query('EthBalance')
   const results = await queryEth.find()
@@ -123,8 +122,9 @@ async function getUserHoldings() {
   let userNFTs = []
 
   for (let i = 0; i < results.length; i++) {
+    // console.log('results at ETH', results[i])
     results[i] = {
-      balance: results[0].get('balance'),
+      balance: results[i].get('balance'),
       symbol: 'ETH',
       name: 'Ethereum',
       decimals: 18,
@@ -165,10 +165,9 @@ async function getUserHoldings() {
   }
 }
 
-// this function verifies what the user holds
 async function verifyHolding() {
   let holdings = await getUserHoldings()
-  console.log(holdings)
+  // console.log(holdings)
 
   // holdings is an aray of arays, need to extract the two
   let balances = holdings[0]
@@ -183,11 +182,11 @@ async function verifyHolding() {
   for (let i = 0; i < userNFTs.length; i++) {
     symbols.push(userNFTs[i].symbol)
   }
-  console.log(symbols)
+  // console.log(symbols)
   return symbols
 }
 
-// this function checks for groups in DB and returns them
+// CHAT ROOMS
 async function checkGroupInfo() {
   // query chats table to ensure there are no other groups with same token or name
   const query = new Moralis.Query('Chats')
@@ -195,13 +194,12 @@ async function checkGroupInfo() {
   return results
 }
 
-// this function lets users create chat groups by specifying name and token after it verifies that the creator holds that crypto AND there are no other groups with same parameters
 async function createGroup() {
   const groupName = $('#groupNameInput').val()
   const groupToken = $('#tokenInput').val()
-  const user = Moralis.User.current()
-  const creatorAddress = user.get('accounts')
-  const creatorName = user.get('username')
+  const mUser = Moralis.User.current()
+  const creatorAddress = mUser.get('accounts')
+  const creatorName = mUser.get('username')
   console.log('group', groupName, groupToken, creatorAddress[0])
 
   let holdings = await verifyHolding()
@@ -236,17 +234,6 @@ async function createGroup() {
   }
 }
 
-// this function creates a random ID that we save in databased when we create a chat group
-function uuidv4() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-    (
-      c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16),
-  )
-}
-
-// this grabs chat groups from DB and diplays the list. When user clicks on the link they are taken to that chat room
 async function getGroupChats() {
   $('#chatRoomsList').empty()
   const Chats = await Moralis.Object.extend('Chats')
@@ -258,19 +245,17 @@ async function getGroupChats() {
   for (let object of results) {
     let groupName = object.get('groupName')
     let listItem = document.createElement('li')
-    // listItem.innerHTML = `<a href="/chatRoom.ejs?id=${
-    //   object.id
-    // }" id="${object.get('groupChatId')}">${groupName}</a>`
-    listItem.innerHTML = `<a href="http://localhost:3000/chatRoom" id="${object.get(
+    listItem.innerHTML = `<a href="chat.html?id=${object.id}" id="${object.get(
       'groupChatId',
     )}">${groupName}</a>`
+
     $('#chatRoomsList').append(listItem)
   }
 }
 
 getGroupChats()
 
-// creationg stripe checkout
+// STRIPE CHECKOUT
 function stripeCheckout() {
   console.log('stripe checkout')
   // we will use server.js app.post('/create-checkout-session', async (req, res) function to create a checkout session
@@ -300,6 +285,7 @@ function stripeCheckout() {
     })
 }
 
+// VIDEO CHAT
 function displayCallOptionsDiv() {
   console.log('displayOptions clicked')
   $('#callOptionsDiv').show()

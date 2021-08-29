@@ -1,15 +1,24 @@
 const urlParams = new URLSearchParams(window.location.search)
 const chatId = urlParams.get('id')
 console.log('chatId', chatId)
+
 let amount
+
+// once page loads, check if user is logged in and display appropriate button
+$(document).ready(async function () {
+  await appendGroupName()
+  await allowToChat()
+  await listenForMessages()
+  await getHistoryMessages()
+  scrollToBottom()
+})
 
 async function appendGroupName() {
   const Chats = await Moralis.Object.extend('Chats')
   const query = new Moralis.Query(Chats)
   query.equalTo('objectId', chatId)
-  const results = await query.find()
-  let groupName = results[0].attributes.groupName
-  document.getElementById('groupNameDisplay').innerHTML = groupName
+  let results = await query.find()
+  $('#groupNameDisplay').append(results[0].attributes.groupName)
 }
 
 async function getRequiredChatToken() {
@@ -48,7 +57,7 @@ async function sendMessage() {
   scrollToBottom()
 
   let moralisUser = Moralis.User.current()
-  let name = moralisUser.get('name')
+  let name = moralisUser.get('username')
   let address = moralisUser.get('ethAddress')
 
   $('#sendMessageChatBtn').removeClass('disabled')
@@ -61,8 +70,6 @@ async function sendMessage() {
     message.set('message', newMessage)
     message.set('address', address)
     message.set('group', chatId)
-    message.set('counter')
-    message.increment('counter')
     message.save()
   }
 }
@@ -96,14 +103,46 @@ async function listenForMessages() {
   })
 }
 
-// this is great and it calls all, but after a while, the front end doesn't load any new messages
-// for now I have skipped the first 100 but as it grows the problem will continue
 async function getHistoryMessages() {
   const Message = Moralis.Object.extend('Message')
   const query = new Moralis.Query(Message)
   query.equalTo('group', chatId)
-  query.skip(50)
+  // query.skip(50)
   const results = await query.find()
+  console.log(results.length)
+
+  if (results.length > 99) {
+    query.skip(99)
+    const skippedResults = await query.find()
+
+    skippedResults.forEach((message) => {
+      let listItem = document.createElement('li')
+      let userInfo = document.createElement('div')
+
+      let date = message.get('createdAt')
+      date = new Date(date).toLocaleString()
+
+      var callButton = `<button class="btn btn-sm btn-outline-secondary" id="call-button" onclick="videoCall(${message.get(
+        'senderName',
+      )})"><i class="fas fa-phone"></i> Call</button>`
+
+      userInfo.innerHTML = `<div class="user-info">
+                              <div class="user-name inline">${message.get(
+                                'senderName',
+                              )}
+                                <div class="message-created inline">${date}</div>
+                                <div class="call-button inline">${callButton}</div>
+                              </div>
+  
+                              <div class="user-message">${message.get(
+                                'message',
+                              )}</div>
+                            </div>`
+
+      listItem.appendChild(userInfo)
+      historyList.appendChild(listItem)
+    })
+  }
 
   const historyList = document.getElementById('historyList')
 
@@ -114,18 +153,13 @@ async function getHistoryMessages() {
     let date = message.get('createdAt')
     date = new Date(date).toLocaleString()
 
-    var callButton = `<button class="btn btn-sm btn-outline-secondary" id="call-button" onclick="videoCall(${message.get(
-      'senderName',
-    )})"><i class="fas fa-phone"></i> Call</button>`
-
     userInfo.innerHTML = `<div class="user-info">
                             <div class="user-name inline">${message.get(
                               'senderName',
                             )}
                               <div class="message-created inline">${date}</div>
-                              <div class="call-button inline">${callButton}</div>
                             </div>
-                            
+
                             <div class="user-message">${message.get(
                               'message',
                             )}</div>
@@ -137,7 +171,7 @@ async function getHistoryMessages() {
   scrollToBottom()
 }
 
-// build function that allows me to get all historic messages when user scrolls up to the beginning of the chat
+// // build function that allows me to get all historic messages when user scrolls up to the beginning of the chat
 async function getOlderMessages() {
   const Message = Moralis.Object.extend('Message')
   const query = new Moralis.Query(Message)
@@ -164,7 +198,7 @@ async function getOlderMessages() {
                               <div class="message-created inline">${date}</div>
                               <div class="call-button inline">${callButton}</div>
                             </div>
-                            
+
                             <div class="user-message">${message.get(
                               'message',
                             )}</div>
@@ -174,8 +208,6 @@ async function getOlderMessages() {
     historyList.appendChild(listItem)
   })
 }
-
-async function videoCall(name) {}
 
 // function to call getSkippedMessages function when user is at the beginning of the chat
 function scrollToTop() {
@@ -208,15 +240,10 @@ function getBottom() {
 }
 
 async function allowToChat() {
-  var userHasToken = await verifyUserHoldsToken()
+  var userHasToken = await verifyHolding()
+  // console.log(userHasToken)
   if (!userHasToken) {
     $('#sendMessageChatBtn').addClass('disabled')
     alert(`You are welcome to read, but you must hold ${chatToken} to chat.`)
   }
 }
-
-appendGroupName()
-// allowToChat()
-getHistoryMessages()
-listenForMessages()
-scrollToBottom()

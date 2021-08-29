@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- BOOTSTRAP -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <!-- JQUERY -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/style.css" />
+    <link rel="stylesheet" href="/public/chat.css" />
+
+    <!-- fontAwesome-->
+    <script
+      src="https://kit.fontawesome.com/4da3f1c584.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://npmcdn.com/moralis@0.0.6/dist/moralis.js"></script>
+
+    <script src="/client/chatPage.js" defer></script>
+    <script src="/client/index.js" defer></script>
+
+    <script></script>
+
+    <title id="chatRoomTitleId">Crypto Chat Room</title>
+  </head>
+  <body>
+    <!-- chat room -->
+    <div class="container fixed-container-height">
+      <div class="header-area">
+        <h1 class="text-center text-white">
+          <i class="fas fa-comments"></i>
+          &nbsp; &nbsp; Crypto Chat &nbsp; &nbsp;
+          <i class="fas fa-comments"></i>
+        </h1>
+        <h3 class="text-center text-white" id="groupNameDisplay"></h3>
+      </div>
+
+      <div class="message-area" id="chatHistory">
+        <ul id="historyList"></ul>
+      </div>
+
+      <div class="typing-area">
+        <textarea
+          class="typing-box"
+          type="text"
+          id="chatMessageInput"
+          autofocus
+        ></textarea>
+        <button
+          class="btn btn-secondary btn-lg"
+          id="sendMessageChatBtn"
+          onclick="sendMessage()"
+        >
+          Send
+          <i class="far fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

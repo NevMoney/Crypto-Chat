@@ -1,0 +1,118 @@
+.message-area {
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+#historyList,
+#chatRoomsList {
+  list-style-type: none;
+}
+
+.header-area {
+  height: 6%;
+  background: #5b656e;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.35),
+    0 0 1rem rgba(0, 0, 0, 0.35);
+  color: white;
+  margin-bottom: 1.5rem;
+  padding: 0.25rem;
+  border-radius: 0 0rem 0.75rem 0.75rem;
+}
+
+.message-area {
+  height: 85%;
+  padding: 0.5rem;
+  overflow: auto;
+}
+
+.typing-area {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  height: 8%;
+}
+
+.typing-box {
+  width: 90%;
+  height: 80%;
+  resize: none;
+  padding: 0.35rem;
+  background-color: #5b656e;
+  color: whitesmoke;
+  border: none;
+  border-radius: 0.75rem;
+}
+
+#sendMessageChatBtn {
+  width: 9%;
+  padding: 0.35rem;
+  font-size: 22px;
+  margin: 0.75rem;
+  position: relative;
+}
+
+.message-box {
+  margin-top: 10px;
+}
+
+.my-message-box {
+  text-align: right;
+  background: white;
+}
+
+.message {
+  max-width: 70%;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25),
+    0 0 1rem rgba(0, 0, 0, 0.25);
+}
+
+.my-message {
+  float: right;
+  color: rgb(122, 255, 115);
+  background-color: #3d4145;
+}
+
+.others-message {
+  float: left;
+  color: #ff2cfb;
+  background-color: #333639;
+}
+
+.separator {
+  width: 100%;
+  height: 0.5rem;
+  float: left;
+}
+
+.user-name {
+  font-size: 1.65rem;
+  font-weight: bold;
+  color: rgb(154, 154, 154);
+}
+
+.message-created {
+  font-size: 0.85rem;
+  color: rgb(154, 154, 154);
+}
+
+div.inline {
+  display: inline-block;
+}
+
+.user-message {
+  padding: 0.15rem;
+  font-size: 1.5rem;
+  color: white;
+  margin-left: 10px;
+}
+
+.user-info {
+  margin-bottom: 20px;
+  padding: 0.1rem;
+}
+
+.tip-button {
+  float: inline-end;
+  margin-left: 5rem;
+}

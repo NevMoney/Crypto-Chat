@@ -4,11 +4,13 @@ Moralis.serverURL = 'https://khep691mo8hw.moralisweb3.com:2053/server'
 
 Moralis.Web3.getSigningData = () => 'Welcome to Crypto Chat'
 
+let user
+
 //   once page loads, check if user is logged in and display appropriate button
-$(document).ready(function () {
+$(document).ready(async function () {
   // is user logged in
-  let user = Moralis.User.current()
-  if (!user) {
+  let moralisUser = Moralis.User.current()
+  if (!moralisUser) {
     notLoggedIn()
   } else {
     loggedIn()
@@ -35,7 +37,10 @@ function notLoggedIn() {
       `)
 }
 
-function loggedIn() {
+async function loggedIn() {
+  const web3 = new Web3(window.ethereum)
+  const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
+  user = web3.utils.toChecksumAddress(accounts[0])
   $('#welcome_text').empty()
   $('#btn-login').hide()
   $('#btn-logout').show()
@@ -57,12 +62,12 @@ function loggedIn() {
 
 // add from here down
 async function login() {
-  let user = Moralis.User.current()
-  if (!user) {
-    user = await Moralis.Web3.authenticate()
+  let mUser = Moralis.User.current()
+  if (!mUser) {
+    mUser = await Moralis.Web3.authenticate()
     loggedIn()
   }
-  console.log('logged in user:', user)
+  console.log('logged in user:', mUser)
 }
 
 async function logOut() {
@@ -325,9 +330,9 @@ async function generateNewVideoRoom() {
   console.log('videoRoomIdStringLast', videoRoomId)
 
   // grab moralis DB user info
-  const user = Moralis.User.current()
-  const userAddress = user.get('accounts')
-  const userName = user.get('username')
+  const mUser = Moralis.User.current()
+  const userAddress = mUser.get('accounts')
+  const userName = mUser.get('username')
 
   // then we need to create a new video room
   const videoRooms = new Moralis.Object('VideoRooms')
@@ -357,17 +362,114 @@ async function getVideoRoomIds() {
   const VideoRooms = await Moralis.Object.extend('VideoRooms')
   const query = new Moralis.Query(VideoRooms)
   const results = await query.find()
-  console.log('getVideoRoomId results', results)
   return results
 }
 
 async function displayPaidVideoRooms() {
   let paidVideos = await getVideoRoomIds()
+  let videoCreator = paidVideos[0].get('creatorAddress')
+
+  // put user to lowercase
+  let userAddress = user.toLowerCase()
+
   for (let i = 0; i < paidVideos.length; i++) {
+    let callTitle = paidVideos[i].get('callGroupTitle')
     let videoRoomId = paidVideos[i].get('videoRoomId')
     let listItem = document.createElement('li')
-    listItem.innerHTML = `<a href="http://localhost:3000/room/${videoRoomId}">${videoRoomId}</a>`
+
+    let button = `<button class="btn btn-primary btn-lg" id="joinVideoRmBtn${videoRoomId}" onclick="checkPassword('${videoRoomId}')">Join The Call</button>`
+
+    let ownerSetNameButton = `<button class="btn btn-primary btn-lg" id="setNameBtn${videoRoomId}" onclick="setName('${videoRoomId}')">Set Call Name</button>`
+
+    let ownerSetPasswordButton = `<button class="btn btn-primary btn-lg" id="setPasswordBtn${videoRoomId}" onclick="setPassword('${videoRoomId}')">Set Call Password</button>`
+
+    if (callTitle) {
+      videoRoomId = callTitle
+    } else {
+      videoRoomId = paidVideos[i].get('videoRoomId')
+    }
+
+    if (videoCreator == userAddress) {
+      listItem.innerHTML = `<div id='videoCallListItem${videoRoomId}' class='container'>${videoRoomId} ${button} ${ownerSetNameButton} ${ownerSetPasswordButton}</div>`
+    } else {
+      listItem.innerHTML = `<div id='videoCallListItem${videoRoomId}' class='container'>${videoRoomId} ${button}</div>`
+    }
+
     $('#videoRoomsList').append(listItem)
+  }
+}
+
+async function setName(videoRoomId) {
+  console.log('setName clicked')
+  const query = new Moralis.Query('VideoRooms')
+  query.equalTo('videoRoomId', videoRoomId)
+  const results = await query.find()
+  console.log('results', results)
+
+  const videoRoom = results[0]
+  console.log('videoRoom', videoRoom)
+
+  const videoRoomIdString = videoRoom.get('videoRoomId')
+  console.log('videoRoomIdString', videoRoomIdString)
+
+  const callTitle = prompt('Enter a title for your call')
+
+  if (callTitle === null) {
+    return
+  } else {
+    videoRoom.set('callGroupTitle', callTitle)
+    videoRoom.save()
+  }
+}
+
+// function to set videoRoomId password and save in Moralis DB
+async function setPassword(videoRoomId) {
+  console.log('setPassword clicked')
+  const query = new Moralis.Query('VideoRooms')
+  query.equalTo('videoRoomId', videoRoomId)
+  const results = await query.find()
+  console.log('results', results)
+
+  const videoRoom = results[0]
+  console.log('videoRoom', videoRoom)
+
+  const videoRoomIdString = videoRoom.get('videoRoomId')
+  console.log('videoRoomIdString', videoRoomIdString)
+
+  const password = prompt('Enter a password for your call')
+
+  if (password === null) {
+    return
+  } else {
+    videoRoom.set('password', password)
+    videoRoom.save()
+  }
+}
+
+// function to check for password
+async function checkPassword(videoRoomId) {
+  const query = new Moralis.Query('VideoRooms')
+  query.equalTo('videoRoomId', videoRoomId)
+  const results = await query.find()
+
+  const videoRoom = results[0]
+
+  // if there is a password, prompt user to enter password
+  if (videoRoom.get('password')) {
+    const password = prompt('Enter password')
+    if (password === null) {
+      return
+    } else {
+      if (password === videoRoom.get('password')) {
+        window.open(`http://localhost:3000/room/${videoRoomId}`)
+      } else {
+        alert('Incorrect password')
+      }
+    }
+
+    // if there is no password, open video room
+  } else {
+    window.open(`http://localhost:3000/room/${videoRoomId}`)
   }
 }
 

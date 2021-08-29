@@ -339,3 +339,35 @@ ul {
   background-color: #1c1e20;
   opacity: 0.7;
 }
+
+#videoRooms {
+  margin-bottom: 10px;
+}
+
+#createVideoCallButton {
+  margin-bottom: 20px;
+  padding: 10px;
+  margin-left: 30px;
+}
+
+#callOptionsDiv {
+  margin-bottom: 20px;
+  padding: 10px;
+  margin-left: 30px;
+}
+
+#videoCallDiv {
+  margin-bottom: 20px;
+  padding: 10px;
+  margin-left: 30px;
+}
+
+#videoRoomsList li {
+  padding: 8px;
+  font-size: 1.25rem;
+  color: #2f2e2f;
+}
+
+#videoCallListItem {
+  margin-bottom: 50px;
+}
